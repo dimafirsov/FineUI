@@ -3,6 +3,7 @@ package com.softserve.fineui;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 
@@ -13,18 +14,24 @@ import static org.junit.Assert.*;
  */
 public class UtilsTest {
 
+    WebDriver driver;
+
     @Before
-    public void createTempFolder(){
+    public void beforeTest(){
         File tempDir = new File("temp");
             if(!tempDir.exists()){
                 tempDir.mkdir();
             }
+
+        this.driver = Utils.webDriverInit();
     }
 
     @After
-    public void clearTempFolder(){
+    public void afterTest(){
         File tempDir = new File("temp");
         Utils.clearTempFolder(tempDir);
+
+        this.driver.close();
     }
 
     @Test

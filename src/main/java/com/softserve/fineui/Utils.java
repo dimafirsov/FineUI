@@ -1,5 +1,8 @@
 package com.softserve.fineui;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,6 +15,11 @@ import java.util.Properties;
  */
 
 public class Utils {
+
+    public static WebDriver webDriverInit(){
+        System.setProperty("webdriver.chrome.driver", "driver\\chromedriver.exe");
+        return new ChromeDriver();
+    }
 
     public static void clearTempFolder(File folder){
         if(folder.exists()){

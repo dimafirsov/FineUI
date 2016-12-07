@@ -2,8 +2,6 @@ package com.softserve.fineui;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import static com.softserve.fineui.Utils.*;
 
@@ -15,10 +13,9 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.setProperty("webdriver.chrome.driver", "driver\\chromedriver.exe");
         Utils u = new Utils();
         Screenshots s = new Screenshots();
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = Utils.webDriverInit();
 
         String expected = getProps().getProperty("expected.screenshot.path") + "expected_screen.png";
         String actual = getProps().getProperty("actual.screenshot.path") + "actual_screen.png";
@@ -32,7 +29,7 @@ public class App
         driver.get("https:\\facebook.com");
         s.makeScreenshot(expected, driver);
 
-        driver.findElement(By.id("u_0_l")).click();
+        driver.findElement(By.id("u_0_n")).click();
         s.makeScreenshot(actual, driver);
 
         s.makeDiff(expected, actual);

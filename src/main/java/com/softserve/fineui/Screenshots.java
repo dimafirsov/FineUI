@@ -8,8 +8,7 @@ import ru.yandex.qatools.ashot.comparison.ImageDiffer;
 
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.IOException;
-import java.io.InterruptedIOException;
+import java.io.IOException; 
 
 import static com.softserve.fineui.Utils.getProps;
 
