@@ -16,6 +16,7 @@ import java.util.Properties;
 
 public class Utils {
 
+
     public static WebDriver webDriverInit(){
         System.setProperty("webdriver.chrome.driver", "driver\\chromedriver.exe");
         return new ChromeDriver();
@@ -39,36 +40,15 @@ public class Utils {
         return file.exists();
     }
 
-    public void createDir(String path){
+    public static void createDir(String path){
         File file = new File(path);
         file.mkdir();
     }
 
-    public void createDirs(ArrayList<String> paths){
+    public static void createDirs(ArrayList<String> paths){
         for (String path : paths) {
             if(!isExist(path)) new File(path).mkdir();
         }
-    }
-
-    public ArrayList<String> setScreenshotDirs(String absolutePath) {
-        String screenshotsRootDir = absolutePath;
-        if(!isExist(absolutePath)){
-            createDir(absolutePath);
-        }
-        String expected = screenshotsRootDir + File.separator + "expected" + File.separator;
-        String actual = screenshotsRootDir + File.separator + "actual" + File.separator;
-        String diff = screenshotsRootDir + File.separator + "diff" + File.separator;
-        String gifs = screenshotsRootDir + File.separator + "gifs" + File.separator;
-
-        ArrayList<String> screenshotDirs= new ArrayList<String>();
-        screenshotDirs.add(expected);
-        screenshotDirs.add(actual);
-        screenshotDirs.add(diff);
-        screenshotDirs.add(gifs);
-
-        createDirs(screenshotDirs);
-
-        return screenshotDirs;
     }
 
     public static Properties getProps(){
@@ -83,4 +63,3 @@ public class Utils {
         return props;
     }
 }
-
