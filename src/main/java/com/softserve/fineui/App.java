@@ -14,7 +14,7 @@ public class App
         Screenshots s = new Screenshots();
         WebDriver driver = Utils.webDriverInit();
 
-        s.setScreenshotDirs("someOtherTestScreenshots");
+        s.setScreenshotDirs("testScreenshots");
 
         driver.manage().window().maximize();
 

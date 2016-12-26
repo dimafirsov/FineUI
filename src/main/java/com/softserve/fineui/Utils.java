@@ -1,5 +1,6 @@
 package com.softserve.fineui;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -18,8 +19,13 @@ public class Utils {
 
 
     public static WebDriver webDriverInit(){
-        System.setProperty("webdriver.chrome.driver", "driver\\chromedriver.exe");
-        return new ChromeDriver();
+        if (SystemUtils.IS_OS_WINDOWS){
+            System.setProperty("webdriver.chrome.driver", "driver" + File.separator + "chromedriver.exe");
+            return new ChromeDriver();
+        } else {
+            System.setProperty("webdriver.chrome.driver", "driver" + File.separator + "chromedriver_mac");
+            return new ChromeDriver();
+        }
     }
 
     public static void clearTempFolder(File folder){
