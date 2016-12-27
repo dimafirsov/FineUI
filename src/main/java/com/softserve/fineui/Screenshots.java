@@ -18,6 +18,8 @@ import static com.softserve.fineui.Utils.*;
  */
 public class Screenshots {
 
+    private final String SCREENSHOT_EXTENSION = ".png";
+
     private String SCREENSHOTS_ROOT_DIR;
 
     private String EXPECTED_SCREENSHOT_PATH;
@@ -25,41 +27,47 @@ public class Screenshots {
     private String DIFF_SCREENSHOT_PATH;
     private String GIF_SCREENSHOT_PATH;
 
-    private String EXPECTED_FILENAME="expected.png";
-    private String ACTUAL_FILENAME="actual.png";
-    private String DIFF_FILENAME="diff.png";
-    private String GIF_FILENAME="gif.png";
+    private String EXPECTED_FILENAME = screenshotNameFormat("expected");
+    private String ACTUAL_FILENAME = screenshotNameFormat("actual");
+    private String DIFF_FILENAME = screenshotNameFormat("diff");
+    private String GIF_FILENAME = screenshotNameFormat("gif");
 
-    public String get_SCREENSHOTS_ROOT_DIR(){
+    public String GET_SCREENSHOTS_ROOT_DIR(){
         return SCREENSHOTS_ROOT_DIR;
     }
 
-    public String get_EXPECTED_SCREENSHOT_PATH(){
+    public String GET_EXPECTED_PATH(){
         return EXPECTED_SCREENSHOT_PATH;
     }
 
-    public String get_ACTUAL_SCREENSHOT_PATH(){
+    public String GET_ACTUAL_PATH(){
         return ACTUAL_SCREENSHOT_PATH;
     }
 
-    public String get_DIFF_SCREENSHOT_PATH(){
+    public String GET_DIFF_PATH(){
         return DIFF_SCREENSHOT_PATH;
     }
 
-    public String get_GIF_SCREENSHOT_PATH(){
+    public String GET_GIF_PATH(){
         return GIF_SCREENSHOT_PATH;
     }
 
-    public String getExpectedFilePath(){
-        return this.EXPECTED_SCREENSHOT_PATH + File.separator + this.EXPECTED_FILENAME;
-    }
+    public String getExpectedFilePath(){return GET_EXPECTED_PATH() + File.separator + this.EXPECTED_FILENAME;}
 
     public String getActualFilePath(){
-        return this.ACTUAL_SCREENSHOT_PATH + File.separator + this.ACTUAL_FILENAME;
+        return GET_ACTUAL_PATH() + File.separator + this.ACTUAL_FILENAME;
     }
 
     public String getDiffFilePath(){
-        return this.DIFF_SCREENSHOT_PATH + File.separator + this.DIFF_FILENAME;
+        return GET_DIFF_PATH() + File.separator + this.DIFF_FILENAME;
+    }
+
+    public String getGifFilePath(){
+        return GET_GIF_PATH() + File.separator + this.GIF_FILENAME;
+    }
+
+    public String screenshotNameFormat(String name){
+        return (name + "_" + getCurrentDay() + "_" + getCurrentDate() + SCREENSHOT_EXTENSION );
     }
 
     public ArrayList<String> setScreenshotDirs(String path) {
@@ -73,10 +81,10 @@ public class Screenshots {
         if(!isExist(path)){ createDir(path); }
 
         ArrayList<String> screenshotDirs= new ArrayList<String>();
-        screenshotDirs.add(get_EXPECTED_SCREENSHOT_PATH());
-        screenshotDirs.add(get_ACTUAL_SCREENSHOT_PATH());
-        screenshotDirs.add(get_DIFF_SCREENSHOT_PATH());
-        screenshotDirs.add(get_GIF_SCREENSHOT_PATH());
+        screenshotDirs.add(GET_EXPECTED_PATH());
+        screenshotDirs.add(GET_ACTUAL_PATH());
+        screenshotDirs.add(GET_DIFF_PATH());
+        screenshotDirs.add(GET_GIF_PATH());
 
         createDirs(screenshotDirs);
         return screenshotDirs;
@@ -122,6 +130,13 @@ public class Screenshots {
         }finally{
             System.out.println("\nDiff completed.");
         }
+    }
+
+    public Screenshot saveActualScreenshot() throws IOException {
+        //TODO: everything
+        Screenshot expected = getExpectedScreenshot();
+        Screenshot actual = getActualScreenshot();
+        return actual;
     }
 }
 

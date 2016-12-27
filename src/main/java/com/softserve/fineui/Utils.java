@@ -8,8 +8,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Dmytro Firsov on 12/2/2016.
@@ -17,8 +18,8 @@ import java.util.Properties;
 
 public class Utils {
 
-
-    public static WebDriver webDriverInit(){
+    public static WebDriver webDriverInit()
+    {
         if (SystemUtils.IS_OS_WINDOWS){
             System.setProperty("webdriver.chrome.driver", "driver" + File.separator + "chromedriver.exe");
             return new ChromeDriver();
@@ -28,12 +29,12 @@ public class Utils {
         }
     }
 
-    public static void clearTempFolder(File folder){
+    public static void clearFolder(File folder){
         if(folder.exists()){
             File[] folderContents = folder.listFiles();
             for(File file : folderContents){
                 if(file.isDirectory()){
-                    clearTempFolder(file);
+                    removeFolder(file);
                 }else{
                     file.delete();
                 }
@@ -41,23 +42,34 @@ public class Utils {
         }
     }
 
+    public static void removeFolder(File folder){
+        clearFolder(folder);
+        folder.delete();
+    }
+
     public static boolean isExist(String path){
         File file = new File(path);
         return file.exists();
     }
 
-    public static void createDir(String path){
+    public static boolean createDir(String path){
+        Boolean success = true;
         File file = new File(path);
-        file.mkdir();
+        if(!file.exists()){
+            file.mkdir();
+        }else{
+            System.out.println("Folder with name `" + file + "` already exists");
+            success = false;
+        }
+        return success;
     }
 
     public static void createDirs(ArrayList<String> paths){
-        for (String path : paths) {
-            if(!isExist(path)) new File(path).mkdir();
-        }
+        for (String path : paths) { if(!isExist(path)) new File(path).mkdir(); }
     }
 
-    public static Properties getProps(){
+    public static Properties getProps()
+    {
         Properties props = new Properties();
         try {
             props.load(new FileInputStream(new File("cfg\\const.properties")));
@@ -67,5 +79,33 @@ public class Utils {
             System.out.println("WTF");
         }
         return props;
+    }
+
+    public static String getCurrentDate(){
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_hhmmss");
+        return dateFormat.format(date);
+    }
+
+    public static String getCurrentDate(String yyyyMMddHHmmSS){
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat(yyyyMMddHHmmSS);
+        return dateFormat.format(date);
+    }
+
+    public static String getCurrentDay(){
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (day) {
+            case Calendar.SUNDAY: return "Sun";
+            case Calendar.MONDAY: return "Mon";
+            case Calendar.TUESDAY: return "Tue";
+            case Calendar.WEDNESDAY: return "Wed";
+            case Calendar.THURSDAY: return "Thu";
+            case Calendar.FRIDAY: return "Fri";
+            case Calendar.SATURDAY: return "Sat";
+        }
+        return "Wrong day of week";
     }
 }

@@ -14,37 +14,35 @@ import static org.junit.Assert.*;
  */
 public class UtilsTest {
 
+
     WebDriver driver;
+    String    tempDirName = "temp";
 
     @Before
     public void beforeTest(){
-        File tempDir = new File("temp");
-            if(!tempDir.exists()){
-                tempDir.mkdir();
-            }
-
-        this.driver = Utils.webDriverInit();
+//        this.driver = Utils.webDriverInit();
     }
 
     @After
     public void afterTest(){
-        File tempDir = new File("temp");
-        Utils.clearTempFolder(tempDir);
-
-        this.driver.close();
+        Utils.removeFolder(new File(this.tempDirName));
+//        this.driver.close();
     }
 
     @Test
     public void isExist() throws Exception {
-        String path = "temp\\test.txt";
+        String path = tempDirName + File.separator + "test.txt";
         File file = new File(path);
+        assertEquals(file.exists(), Utils.isExist(path));
         file.createNewFile();
         assertEquals(file.exists(), Utils.isExist(path));
     }
 
     @Test
     public void createDir() throws Exception {
-        String dirName = "temp";
+        Boolean result = Utils.createDir(this.tempDirName);
+        File dir = new File(this.tempDirName);
+        assertEquals(dir.exists(), result);
     }
 
     @Test
@@ -60,6 +58,16 @@ public class UtilsTest {
     @Test
     public void getProps() throws Exception {
 
+    }
+
+    @Test
+    public void getCurrentDate() throws Exception {
+        Utils.getCurrentDate();
+    }
+
+    @Test
+    public void getCurrentDay() throws Exception {
+        System.out.println(Utils.getCurrentDay());
     }
 
 }
