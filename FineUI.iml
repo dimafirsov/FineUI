@@ -62,5 +62,6 @@
     <orderEntry type="library" name="Maven: com.googlecode.lambdaj:lambdaj:2.3.3" level="project" />
     <orderEntry type="library" name="Maven: org.objenesis:objenesis:1.2" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib-nodep:2.2" level="project" />
+    <orderEntry type="library" name="groovy-2.4.7" level="application" />
   </component>
 </module>

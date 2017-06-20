@@ -1,8 +1,6 @@
 package com.softserve.fineui;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.openqa.selenium.WebDriver;
 
 import java.io.File;
@@ -14,9 +12,19 @@ import static org.junit.Assert.*;
  */
 public class UtilsTest {
 
-
     WebDriver driver;
     String    tempDirName = "temp";
+
+    @BeforeClass
+    public static void beforeAll() {
+        File testDir = new File("temp");
+        testDir.mkdir();
+    }
+
+    @AfterClass
+    public static void afterAll() {
+        Utils.removeFolder(new File("temp"));
+    }
 
     @Before
     public void beforeTest(){
@@ -25,7 +33,6 @@ public class UtilsTest {
 
     @After
     public void afterTest(){
-        Utils.removeFolder(new File(this.tempDirName));
 //        this.driver.close();
     }
 
@@ -40,9 +47,11 @@ public class UtilsTest {
 
     @Test
     public void createDir() throws Exception {
-        Boolean result = Utils.createDir(this.tempDirName);
-        File dir = new File(this.tempDirName);
-        assertEquals(dir.exists(), result);
+        String dir = this.tempDirName + File.separator + "createDir";
+        Boolean result = Utils.createDir(dir);
+        File testDir = new File(dir);
+        testDir.mkdir();
+        assertEquals(testDir.exists(), result);
     }
 
     @Test

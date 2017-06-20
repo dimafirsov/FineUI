@@ -11,18 +11,18 @@ public class App
 {
     public static void main( String[] args )
     {
-        Screenshots s = new Screenshots();
         WebDriver driver = Utils.webDriverInit();
+        Screenshots s = new Screenshots(driver);
 
         s.setScreenshotDirs("testScreenshots");
 
         driver.manage().window().maximize();
 
         driver.get("https:\\facebook.com");
-        s.makeExpectedScreenshot(driver);
+        s.makeExpectedScreenshot();
 
         driver.findElement(By.id("loginbutton")).click();
-        s.makeActualScreenshot(driver);
+        s.makeActualScreenshot();
         s.makeDiff();
 
         driver.close();

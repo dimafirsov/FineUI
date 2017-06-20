@@ -18,6 +18,8 @@ import static com.softserve.fineui.Utils.*;
  */
 public class Screenshots {
 
+    private WebDriver driver;
+
     private final String SCREENSHOT_EXTENSION = ".png";
 
     private String SCREENSHOTS_ROOT_DIR;
@@ -31,6 +33,10 @@ public class Screenshots {
     private String ACTUAL_FILENAME = screenshotNameFormat("actual");
     private String DIFF_FILENAME = screenshotNameFormat("diff");
     private String GIF_FILENAME = screenshotNameFormat("gif");
+
+    Screenshots(WebDriver driver){
+        this.driver = driver;
+    }
 
     public String GET_SCREENSHOTS_ROOT_DIR(){
         return SCREENSHOTS_ROOT_DIR;
@@ -70,15 +76,15 @@ public class Screenshots {
         return (name + "_" + getCurrentDay() + "_" + getCurrentDate() + SCREENSHOT_EXTENSION );
     }
 
-    public ArrayList<String> setScreenshotDirs(String path) {
+    public ArrayList<String> setScreenshotDirs(String screenshotsDirName) {
 
-        this.SCREENSHOTS_ROOT_DIR = path;
-        this.EXPECTED_SCREENSHOT_PATH = path + File.separator + "expected" + File.separator;
-        this.ACTUAL_SCREENSHOT_PATH = path + File.separator + "actual" + File.separator;
-        this.DIFF_SCREENSHOT_PATH = path + File.separator + "diff" + File.separator;
-        this.GIF_SCREENSHOT_PATH = path + File.separator + "gifs" + File.separator;
+        this.SCREENSHOTS_ROOT_DIR = screenshotsDirName;
+        this.EXPECTED_SCREENSHOT_PATH = screenshotsDirName + File.separator + "expected" + File.separator;
+        this.ACTUAL_SCREENSHOT_PATH = screenshotsDirName + File.separator + "actual" + File.separator;
+        this.DIFF_SCREENSHOT_PATH = screenshotsDirName + File.separator + "diff" + File.separator;
+        this.GIF_SCREENSHOT_PATH = screenshotsDirName + File.separator + "gifs" + File.separator;
 
-        if(!isExist(path)){ createDir(path); }
+        if(!isExist(screenshotsDirName)){ createDir(screenshotsDirName); }
 
         ArrayList<String> screenshotDirs= new ArrayList<String>();
         screenshotDirs.add(GET_EXPECTED_PATH());
@@ -90,8 +96,8 @@ public class Screenshots {
         return screenshotDirs;
     }
 
-    public void makeExpectedScreenshot(WebDriver driver){
-        Screenshot screenshot = new AShot().takeScreenshot(driver);
+    public void makeExpectedScreenshot(){
+        Screenshot screenshot = new AShot().takeScreenshot(this.driver);
         File newScreenshot = new File(getExpectedFilePath());
         try {
             ImageIO.write(screenshot.getImage(), "png", newScreenshot);
@@ -100,8 +106,8 @@ public class Screenshots {
         }
     }
 
-    public void makeActualScreenshot(WebDriver driver){
-        Screenshot screenshot = new AShot().takeScreenshot(driver);
+    public void makeActualScreenshot(){
+        Screenshot screenshot = new AShot().takeScreenshot(this.driver);
         File newScreenshot = new File(getActualFilePath());
         try {
             ImageIO.write(screenshot.getImage(), "png", newScreenshot);
@@ -111,13 +117,11 @@ public class Screenshots {
     }
 
     public Screenshot getExpectedScreenshot()  throws IOException{
-        Screenshot screenshot = new Screenshot(ImageIO.read(new File(getExpectedFilePath())));
-        return screenshot;
+        return new Screenshot(ImageIO.read(new File(getExpectedFilePath())));
     }
 
     public Screenshot getActualScreenshot()  throws IOException{
-            Screenshot screenshot = new Screenshot(ImageIO.read(new File(getActualFilePath())));
-        return screenshot;
+        return new Screenshot(ImageIO.read(new File(getActualFilePath())));
     }
 
     public void makeDiff(){
@@ -126,9 +130,9 @@ public class Screenshots {
             ImageDiff diff = new ImageDiffer().makeDiff(getActualScreenshot(), getExpectedScreenshot());
             File diffFile = new File(getDiffFilePath());
             ImageIO.write(diff.getMarkedImage(), "png", diffFile);
-        }catch(IOException e){
-        }finally{
             System.out.println("\nDiff completed.");
+        }catch(IOException e){
+            System.out.println("\nSomething went wrong");
         }
     }
 

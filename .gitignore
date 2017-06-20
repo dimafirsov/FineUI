@@ -1,2 +1,6 @@
 testScreenshots/
 .idea/
+target/classes/com/softserve/fineui/App.class
+target/classes/com/softserve/fineui/Screenshots.class
+target/classes/com/softserve/fineui/Utils.class
+target/test-classes/com/softserve/fineui/UtilsTest.class
