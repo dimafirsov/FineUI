@@ -11,14 +11,14 @@ public class App
 {
     public static void main( String[] args )
     {
-        WebDriver driver = Utils.webDriverInit();
+        WebDriver driver = Utils.chromeDriverInit();
         Screenshots s = new Screenshots(driver);
 
         s.setScreenshotDirs("testScreenshots");
 
         driver.manage().window().maximize();
+        driver.get("https://facebook.com");
 
-        driver.get("https:\\facebook.com");
         s.makeExpectedScreenshot();
 
         driver.findElement(By.id("loginbutton")).click();
@@ -27,5 +27,9 @@ public class App
 
         driver.close();
 
+        //s.removeScreenshotsRootFolder();
+
     }
+
+
 }

@@ -12,42 +12,48 @@ import static org.junit.Assert.*;
  */
 public class UtilsTest {
 
-    WebDriver driver;
-    String    tempDirName = "temp";
+    private WebDriver driver;
+    private String TEMP_DIR_NAME = "temp";
+    private String SCREENSHOTS_ROOT_DIR = "tempScreenDir";
+    private Screenshots s;
 
     @BeforeClass
     public static void beforeAll() {
-        File testDir = new File("temp");
-        testDir.mkdir();
+
     }
 
     @AfterClass
     public static void afterAll() {
-        Utils.removeFolder(new File("temp"));
+
     }
 
     @Before
     public void beforeTest(){
-//        this.driver = Utils.webDriverInit();
+        Utils.createDir(TEMP_DIR_NAME);
+        this.driver = Utils.chromeDriverInit();
+        s = new Screenshots(this.driver);
+        s.setScreenshotDirs(SCREENSHOTS_ROOT_DIR);
     }
 
     @After
     public void afterTest(){
-//        this.driver.close();
+        this.driver.close();
+        Utils.removeFolder(TEMP_DIR_NAME);
+        //s.removeScreenshotsRootFolder();
     }
 
     @Test
-    public void isExist() throws Exception {
-        String path = tempDirName + File.separator + "test.txt";
+    public void fileExists() throws Exception {
+        String path = TEMP_DIR_NAME + File.separator + "test.txt";
         File file = new File(path);
-        assertEquals(file.exists(), Utils.isExist(path));
+        assertEquals(file.exists(), Utils.fileExists(path));
         file.createNewFile();
-        assertEquals(file.exists(), Utils.isExist(path));
+        assertEquals(file.exists(), Utils.fileExists(path));
     }
 
     @Test
     public void createDir() throws Exception {
-        String dir = this.tempDirName + File.separator + "createDir";
+        String dir = this.TEMP_DIR_NAME + File.separator + "createDir";
         Boolean result = Utils.createDir(dir);
         File testDir = new File(dir);
         testDir.mkdir();
@@ -55,28 +61,17 @@ public class UtilsTest {
     }
 
     @Test
-    public void createDirs() throws Exception {
-
+    public void canAccessGooglePage() {
+        try{
+        driver.manage().window().maximize();
+        driver.get("https://google.com");
+        if(!s.actualScreenshotExists()){
+            s.makeActualScreenshot();}
+            s.makeExpectedScreenshot();
+            s.makeDiff();
+        }catch(Exception e){
+            System.out.println(e);
+            driver.close();
+        }
     }
-
-    @Test
-    public void setScreenshotDirs() throws Exception {
-
-    }
-
-    @Test
-    public void getProps() throws Exception {
-
-    }
-
-    @Test
-    public void getCurrentDate() throws Exception {
-        Utils.getCurrentDate();
-    }
-
-    @Test
-    public void getCurrentDay() throws Exception {
-        System.out.println(Utils.getCurrentDay());
-    }
-
 }

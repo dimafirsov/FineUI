@@ -18,12 +18,20 @@ import static com.softserve.fineui.Utils.*;
  */
 public class Screenshots {
 
+    Screenshots(WebDriver driver){
+        this.driver = driver;
+    }
     private WebDriver driver;
 
+    /**
+     * Setting the required extension for the screenshot files
+     */
     private final String SCREENSHOT_EXTENSION = ".png";
 
+    /**
+     *  Setting up basic paths and names for the screenshots files infrastructure
+     */
     private String SCREENSHOTS_ROOT_DIR;
-
     private String EXPECTED_SCREENSHOT_PATH;
     private String ACTUAL_SCREENSHOT_PATH;
     private String DIFF_SCREENSHOT_PATH;
@@ -34,46 +42,50 @@ public class Screenshots {
     private String DIFF_FILENAME = screenshotNameFormat("diff");
     private String GIF_FILENAME = screenshotNameFormat("gif");
 
-    Screenshots(WebDriver driver){
-        this.driver = driver;
+    /**
+     * Getters for screenshot dirs and files, file name formats etc.
+     */
+    private String getScreenshotsRootDir(){
+        return ".\\" + SCREENSHOTS_ROOT_DIR;
     }
-
-    public String GET_SCREENSHOTS_ROOT_DIR(){
-        return SCREENSHOTS_ROOT_DIR;
-    }
-
-    public String GET_EXPECTED_PATH(){
+    private String getExpectedDir(){
         return EXPECTED_SCREENSHOT_PATH;
     }
-
-    public String GET_ACTUAL_PATH(){
+    private String getActualDir(){
         return ACTUAL_SCREENSHOT_PATH;
     }
-
-    public String GET_DIFF_PATH(){
+    private String getDiffDir(){
         return DIFF_SCREENSHOT_PATH;
     }
-
-    public String GET_GIF_PATH(){
+    private String getGifDir(){
         return GIF_SCREENSHOT_PATH;
     }
+    private String getExpectedFilePath(){
+        return getExpectedDir() + File.separator + this.EXPECTED_FILENAME;}
 
-    public String getExpectedFilePath(){return GET_EXPECTED_PATH() + File.separator + this.EXPECTED_FILENAME;}
-
-    public String getActualFilePath(){
-        return GET_ACTUAL_PATH() + File.separator + this.ACTUAL_FILENAME;
+    private String getActualFilePath(){
+        return getActualDir() + File.separator + this.ACTUAL_FILENAME;
     }
-
-    public String getDiffFilePath(){
-        return GET_DIFF_PATH() + File.separator + this.DIFF_FILENAME;
+    private String getDiffFilePath(){
+        return getDiffDir() + File.separator + this.DIFF_FILENAME;
     }
-
-    public String getGifFilePath(){
-        return GET_GIF_PATH() + File.separator + this.GIF_FILENAME;
+    private String getGifFilePath(){
+        return getGifDir() + File.separator + this.GIF_FILENAME;
     }
-
-    public String screenshotNameFormat(String name){
+    private String screenshotNameFormat(String name){
         return (name + "_" + getCurrentDay() + "_" + getCurrentDate() + SCREENSHOT_EXTENSION );
+    }
+    private Screenshot getExpectedScreenshot()  throws IOException{
+        return new Screenshot(ImageIO.read(new File(getExpectedFilePath())));
+    }
+    private Screenshot getActualScreenshot()  throws IOException{
+        return new Screenshot(ImageIO.read(new File(getActualFilePath())));
+    }
+    public boolean actualScreenshotExists(){
+        return fileExists(getActualFilePath());
+    }
+    public boolean expectedScreenshotExists(){
+        return fileExists(getExpectedFilePath());
     }
 
     public ArrayList<String> setScreenshotDirs(String screenshotsDirName) {
@@ -84,13 +96,15 @@ public class Screenshots {
         this.DIFF_SCREENSHOT_PATH = screenshotsDirName + File.separator + "diff" + File.separator;
         this.GIF_SCREENSHOT_PATH = screenshotsDirName + File.separator + "gifs" + File.separator;
 
-        if(!isExist(screenshotsDirName)){ createDir(screenshotsDirName); }
+        if(!fileExists(screenshotsDirName)){
+            createDir(screenshotsDirName);
+        }
 
         ArrayList<String> screenshotDirs= new ArrayList<String>();
-        screenshotDirs.add(GET_EXPECTED_PATH());
-        screenshotDirs.add(GET_ACTUAL_PATH());
-        screenshotDirs.add(GET_DIFF_PATH());
-        screenshotDirs.add(GET_GIF_PATH());
+        screenshotDirs.add(getExpectedDir());
+        screenshotDirs.add(getActualDir());
+        screenshotDirs.add(getDiffDir());
+        screenshotDirs.add(getGifDir());
 
         createDirs(screenshotDirs);
         return screenshotDirs;
@@ -116,14 +130,6 @@ public class Screenshots {
         }
     }
 
-    public Screenshot getExpectedScreenshot()  throws IOException{
-        return new Screenshot(ImageIO.read(new File(getExpectedFilePath())));
-    }
-
-    public Screenshot getActualScreenshot()  throws IOException{
-        return new Screenshot(ImageIO.read(new File(getActualFilePath())));
-    }
-
     public void makeDiff(){
         try {
             System.out.println("\nMaking diff...");
@@ -141,6 +147,10 @@ public class Screenshots {
         Screenshot expected = getExpectedScreenshot();
         Screenshot actual = getActualScreenshot();
         return actual;
+    }
+
+    public void removeScreenshotsRootFolder(){
+        removeFolder(getScreenshotsRootDir());
     }
 }
 

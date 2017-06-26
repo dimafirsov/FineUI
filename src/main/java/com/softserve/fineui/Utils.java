@@ -18,7 +18,7 @@ import java.util.*;
 
 public class Utils {
 
-    public static WebDriver webDriverInit()
+    public static WebDriver chromeDriverInit()
     {
         if (SystemUtils.IS_OS_WINDOWS){
             System.setProperty("webdriver.chrome.driver", "driver" + File.separator + "chromedriver.exe");
@@ -39,6 +39,24 @@ public class Utils {
                     file.delete();
                 }
             }
+        } else {
+            System.out.println("Folder with name '" + folder + "' doesn't exist");
+        }
+    }
+
+    public static void clearFolder(String folder){
+        File targetFolder = new File(folder);
+        if(targetFolder.exists()){
+            File[] folderContents = targetFolder.listFiles();
+            for(File file : folderContents){
+                if(file.isDirectory()){
+                    removeFolder(file);
+                }else{
+                    file.delete();
+                }
+            }
+        } else {
+            System.out.println("Folder with name '" + folder + "' doesn't exist");
         }
     }
 
@@ -46,8 +64,13 @@ public class Utils {
         clearFolder(folder);
         folder.delete();
     }
+    public static void removeFolder(String folder){
+        File targetFolder = new File(folder);
+        clearFolder(targetFolder);
+        targetFolder.delete();
+    }
 
-    public static boolean isExist(String path){
+    public static boolean fileExists(String path){
         File file = new File(path);
         return file.exists();
     }
@@ -65,7 +88,10 @@ public class Utils {
     }
 
     public static void createDirs(ArrayList<String> paths){
-        for (String path : paths) { if(!isExist(path)) new File(path).mkdir(); }
+        for (String path : paths) {
+            if(!fileExists(path))
+                new File(path).mkdir();
+        }
     }
 
     public static Properties getProps()
@@ -87,11 +113,11 @@ public class Utils {
         return dateFormat.format(date);
     }
 
-    public static String getCurrentDate(String yyyyMMddHHmmSS){
+/*    public static String getCurrentDate(String yyyyMMddHHmmSS){
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat(yyyyMMddHHmmSS);
         return dateFormat.format(date);
-    }
+    }*/
 
     public static String getCurrentDay(){
         Date date = new Date();
