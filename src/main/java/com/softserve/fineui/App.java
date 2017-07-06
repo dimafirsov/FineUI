@@ -12,9 +12,12 @@ public class App
     public static void main( String[] args )
     {
         WebDriver driver = Utils.chromeDriverInit();
-        Screenshots s = new Screenshots(driver);
+        FilesStructure structure = new FilesStructure("some_test_suite", "some_test_name");
+        structure.createFileStructure();
 
-        s.setScreenshotDirs("testScreenshots");
+        Screenshots s = new Screenshots(driver, structure.getPath());
+
+        s.setScreenshotDirs("visual");
 
         driver.manage().window().maximize();
         driver.get("https://facebook.com");

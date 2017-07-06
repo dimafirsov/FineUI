@@ -1,8 +1,8 @@
 package com.softserve.fineui;
 
 import org.junit.*;
+import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-
 import java.io.File;
 
 import static org.junit.Assert.*;
@@ -10,37 +10,8 @@ import static org.junit.Assert.*;
 /**
  * Created by Dmytro Firsov on 12/3/2016.
  */
-public class UtilsTest {
+public class UtilsTest extends AbstractTest {
 
-    private WebDriver driver;
-    private String TEMP_DIR_NAME = "temp";
-    private String SCREENSHOTS_ROOT_DIR = "tempScreenDir";
-    private Screenshots s;
-
-    @BeforeClass
-    public static void beforeAll() {
-
-    }
-
-    @AfterClass
-    public static void afterAll() {
-
-    }
-
-    @Before
-    public void beforeTest(){
-        Utils.createDir(TEMP_DIR_NAME);
-        this.driver = Utils.chromeDriverInit();
-        s = new Screenshots(this.driver);
-        s.setScreenshotDirs(SCREENSHOTS_ROOT_DIR);
-    }
-
-    @After
-    public void afterTest(){
-        this.driver.close();
-        Utils.removeFolder(TEMP_DIR_NAME);
-        //s.removeScreenshotsRootFolder();
-    }
 
     @Test
     public void fileExists() throws Exception {
@@ -71,7 +42,6 @@ public class UtilsTest {
             s.makeDiff();
         }catch(Exception e){
             System.out.println(e);
-            driver.close();
         }
     }
 }

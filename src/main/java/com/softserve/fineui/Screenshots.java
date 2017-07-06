@@ -21,7 +21,16 @@ public class Screenshots {
     Screenshots(WebDriver driver){
         this.driver = driver;
     }
+    Screenshots(WebDriver driver, String structurePath) {
+        this.driver = driver;
+        this.structurePath = structurePath;
+    }
     private WebDriver driver;
+    private String structurePath;
+
+    public String getCurrentStructure(){
+        return this.structurePath;
+    }
 
     /**
      * Setting the required extension for the screenshot files
@@ -46,7 +55,7 @@ public class Screenshots {
      * Getters for screenshot dirs and files, file name formats etc.
      */
     private String getScreenshotsRootDir(){
-        return ".\\" + SCREENSHOTS_ROOT_DIR;
+        return SCREENSHOTS_ROOT_DIR;
     }
     private String getExpectedDir(){
         return EXPECTED_SCREENSHOT_PATH;
@@ -60,9 +69,8 @@ public class Screenshots {
     private String getGifDir(){
         return GIF_SCREENSHOT_PATH;
     }
-    private String getExpectedFilePath(){
-        return getExpectedDir() + File.separator + this.EXPECTED_FILENAME;}
 
+    private String getExpectedFilePath(){ return getExpectedDir() + File.separator + this.EXPECTED_FILENAME;}
     private String getActualFilePath(){
         return getActualDir() + File.separator + this.ACTUAL_FILENAME;
     }
@@ -72,6 +80,7 @@ public class Screenshots {
     private String getGifFilePath(){
         return getGifDir() + File.separator + this.GIF_FILENAME;
     }
+
     private String screenshotNameFormat(String name){
         return (name + "_" + getCurrentDay() + "_" + getCurrentDate() + SCREENSHOT_EXTENSION );
     }
@@ -90,21 +99,21 @@ public class Screenshots {
 
     public ArrayList<String> setScreenshotDirs(String screenshotsDirName) {
 
-        this.SCREENSHOTS_ROOT_DIR = screenshotsDirName;
-        this.EXPECTED_SCREENSHOT_PATH = screenshotsDirName + File.separator + "expected" + File.separator;
-        this.ACTUAL_SCREENSHOT_PATH = screenshotsDirName + File.separator + "actual" + File.separator;
-        this.DIFF_SCREENSHOT_PATH = screenshotsDirName + File.separator + "diff" + File.separator;
-        this.GIF_SCREENSHOT_PATH = screenshotsDirName + File.separator + "gifs" + File.separator;
+        SCREENSHOTS_ROOT_DIR = getCurrentStructure() + screenshotsDirName;
+        EXPECTED_SCREENSHOT_PATH =  SCREENSHOTS_ROOT_DIR + File.separator + "expected" + File.separator;
+        ACTUAL_SCREENSHOT_PATH = SCREENSHOTS_ROOT_DIR + File.separator + "actual" + File.separator;
+        DIFF_SCREENSHOT_PATH = SCREENSHOTS_ROOT_DIR + File.separator + "diff" + File.separator;
+        GIF_SCREENSHOT_PATH = SCREENSHOTS_ROOT_DIR + File.separator + "gifs" + File.separator;
 
-        if(!fileExists(screenshotsDirName)){
-            createDir(screenshotsDirName);
+        if(!fileExists(SCREENSHOTS_ROOT_DIR)){
+            createDir(SCREENSHOTS_ROOT_DIR);
         }
 
         ArrayList<String> screenshotDirs= new ArrayList<String>();
-        screenshotDirs.add(getExpectedDir());
-        screenshotDirs.add(getActualDir());
-        screenshotDirs.add(getDiffDir());
-        screenshotDirs.add(getGifDir());
+        screenshotDirs.add(EXPECTED_SCREENSHOT_PATH);
+        screenshotDirs.add(ACTUAL_SCREENSHOT_PATH);
+        screenshotDirs.add(DIFF_SCREENSHOT_PATH);
+        screenshotDirs.add(GIF_SCREENSHOT_PATH);
 
         createDirs(screenshotDirs);
         return screenshotDirs;

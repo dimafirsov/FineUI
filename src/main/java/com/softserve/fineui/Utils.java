@@ -82,7 +82,17 @@ public class Utils {
             file.mkdir();
         }else{
             System.out.println("Folder with name `" + file + "` already exists");
-            success = false;
+        }
+        return success;
+    }
+
+    public static boolean createDirsRecursively(String path){
+        Boolean success = true;
+        String pathPart = "";
+        String[] pathSplit = path.split(File.separator);
+        for(int i=0; i<pathSplit.length;i++){
+            pathPart+=pathSplit[i] + File.separator;
+            createDir(pathPart);
         }
         return success;
     }
