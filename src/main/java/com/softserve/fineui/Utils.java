@@ -1,5 +1,6 @@
 package com.softserve.fineui;
 
+import org.apache.commons.cli.PatternOptionBuilder;
 import org.apache.commons.lang3.SystemUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by Dmytro Firsov on 12/2/2016.
@@ -89,7 +91,8 @@ public class Utils {
     public static boolean createDirsRecursively(String path){
         Boolean success = true;
         String pathPart = "";
-        String[] pathSplit = path.split(File.separator);
+        String pattern = Pattern.quote(File.separator);
+        String[] pathSplit = path.split(pattern);
         for(int i=0; i<pathSplit.length;i++){
             pathPart+=pathSplit[i] + File.separator;
             createDir(pathPart);
