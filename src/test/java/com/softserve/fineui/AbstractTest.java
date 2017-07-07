@@ -1,11 +1,8 @@
 package com.softserve.fineui;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.*;
+import org.junit.rules.TestName;
 import org.openqa.selenium.WebDriver;
-import java.io.File;
 import java.lang.reflect.*;
 
 /**
@@ -24,6 +21,9 @@ public class AbstractTest {
     public FilesStructure structure;
     public static int counter = 0;
 
+    @Rule
+    public TestName name = new TestName();
+
 
     @BeforeClass
     public static void beforeAll() {
@@ -40,13 +40,14 @@ public class AbstractTest {
         Utils.createDir(TEMP_DIR_NAME);
         this.driver = Utils.chromeDriverInit();
         Class currentTestSuite = this.getClass();
-        Method[] allMethodsFromCurrentClass = currentTestSuite.getDeclaredMethods();
+        /* Method[] allMethodsFromCurrentClass = currentTestSuite.getDeclaredMethods();
         allMethods = new String[allMethodsFromCurrentClass.length];
         for(int i=0; i<allMethodsFromCurrentClass.length; i++){
             allMethods[i] = allMethodsFromCurrentClass[i].getName();
-        }
+        }*/
         this.TESTCASE_NAME_ID = this.counter + 1;
-        this.TEST_NAME = allMethods[TESTCASE_NAME_ID - 1];
+        //this.TEST_NAME = allMethods[TESTCASE_NAME_ID - 1];
+        this.TEST_NAME = name.getMethodName();
         this.TESTCASE_NAME = TESTCASE_NAME_ID.toString() + "." + this.TEST_NAME;
         this.structure = new FilesStructure(currentTestSuite.getSimpleName(), TESTCASE_NAME);
         this.structure.createFileStructure();
