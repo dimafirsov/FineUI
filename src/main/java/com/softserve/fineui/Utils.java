@@ -3,6 +3,8 @@ package com.softserve.fineui;
 import org.apache.commons.lang3.SystemUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +31,7 @@ public class Utils {
             return new ChromeDriver();
         }
     }
+
 
     public static void clearFolder(File folder){
         if(folder.exists()){
@@ -145,5 +148,16 @@ public class Utils {
             case Calendar.SATURDAY: return "Sat";
         }
         return "Wrong day of week";
+    }
+
+    public static ChromeOptions allowChromeNotifications(){
+        //Create prefs map to store all preferences
+        Map<String, Object> prefs = new HashMap<String, Object>();
+        //Put this into prefs map to switch off browser notification
+        prefs.put("profile.default_content_setting_values.notifications", 2);
+        //Create chrome options to set this prefs
+        ChromeOptions options = new ChromeOptions();
+        options.setExperimentalOption("prefs", prefs);
+        return options;
     }
 }

@@ -1,10 +1,13 @@
 package com.softserve.fineui;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.comparison.ImageDiff;
 import ru.yandex.qatools.ashot.comparison.ImageDiffer;
+import ru.yandex.qatools.ashot.coordinates.WebDriverCoordsProvider;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -18,9 +21,6 @@ import static com.softserve.fineui.Utils.*;
  */
 public class Screenshots {
 
-    Screenshots(WebDriver driver){
-        this.driver = driver;
-    }
     Screenshots(WebDriver driver, String structurePath) {
         this.driver = driver;
         this.structurePath = structurePath;
@@ -28,7 +28,7 @@ public class Screenshots {
     private WebDriver driver;
     private String structurePath;
 
-    public String getCurrentStructure(){
+    private String getCurrentStructure(){
         return this.structurePath;
     }
 
@@ -70,7 +70,9 @@ public class Screenshots {
         return GIF_SCREENSHOT_PATH;
     }
 
-    private String getExpectedFilePath(){ return getExpectedDir() + File.separator + this.EXPECTED_FILENAME;}
+    private String getExpectedFilePath(){
+        return getExpectedDir() + File.separator + this.EXPECTED_FILENAME;
+    }
     private String getActualFilePath(){
         return getActualDir() + File.separator + this.ACTUAL_FILENAME;
     }
@@ -82,7 +84,7 @@ public class Screenshots {
     }
 
     private String screenshotNameFormat(String name){
-        return (name + "_" + getCurrentDay() + "_" + getCurrentDate() + SCREENSHOT_EXTENSION );
+        return (name + "_" + getCurrentDay() + "_" + getCurrentDate() + this.SCREENSHOT_EXTENSION);
     }
     private Screenshot getExpectedScreenshot()  throws IOException{
         return new Screenshot(ImageIO.read(new File(getExpectedFilePath())));
@@ -123,7 +125,7 @@ public class Screenshots {
         Screenshot screenshot = new AShot().takeScreenshot(this.driver);
         File newScreenshot = new File(getExpectedFilePath());
         try {
-            ImageIO.write(screenshot.getImage(), "png", newScreenshot);
+            ImageIO.write(screenshot.getImage(), this.SCREENSHOT_EXTENSION.replace(".",""), newScreenshot);
         }catch(IOException e){
             System.out.print("WTF! Expected screenshot was not created!");
         }
@@ -133,18 +135,70 @@ public class Screenshots {
         Screenshot screenshot = new AShot().takeScreenshot(this.driver);
         File newScreenshot = new File(getActualFilePath());
         try {
-            ImageIO.write(screenshot.getImage(), "png", newScreenshot);
+            ImageIO.write(screenshot.getImage(), this.SCREENSHOT_EXTENSION.replace(".",""), newScreenshot);
         }catch(IOException e){
             System.out.print("WTF! Actual screenshot was not created!");
         }
     }
 
+    public void makeExpectedScreenshotByCssSelector(String cssSelector) {
+        WebElement webElement = this.driver.findElement(By.cssSelector(cssSelector));
+        Screenshot screenshot = new AShot()
+                .coordsProvider(new WebDriverCoordsProvider())
+                .takeScreenshot(this.driver, webElement);
+        File newScreenshot = new File(getExpectedFilePath());
+        try {
+            ImageIO.write(screenshot.getImage(), this.SCREENSHOT_EXTENSION.replace(".",""), newScreenshot);
+        }catch (IOException e){
+            System.out.println("Expected screenshot of the element with css selector " +
+                    cssSelector + "was not created!");
+        }
+    }
+
+    public void makeActualScreenshotByCssSelector(String cssSelector) {
+        WebElement webElement = this.driver.findElement(By.cssSelector(cssSelector));
+        Screenshot screenshot = new AShot()
+                .coordsProvider(new WebDriverCoordsProvider())
+                .takeScreenshot(this.driver, webElement);
+        File newScreenshot = new File(getActualFilePath());
+        try {
+            ImageIO.write(screenshot.getImage(), this.SCREENSHOT_EXTENSION.replace(".",""), newScreenshot);
+        }catch (IOException e){
+            System.out.println("Actual screenshot of the element with css selector " +
+                    cssSelector + " was not created!");
+        }
+    }
+/*
+    public void makeExpectedScreenshotByID(String elementID) {
+        WebElement webElement = this.driver.findElement(By.id(elementID));
+        Screenshot screenshot = new AShot().takeScreenshot(this.driver, webElement);
+        File newScreenshot = new File(getExpectedFilePath());
+        try {
+            ImageIO.write(screenshot.getImage(), this.SCREENSHOT_EXTENSION.replace(".",""), newScreenshot);
+        }catch (IOException e){
+            System.out.println("Expected screenshot of the element with id " +
+                    elementID + "was not created!");
+        }
+    }
+
+    public void makeActualScreenshotByID(String elementID) {
+        WebElement webElement = this.driver.findElement(By.id(elementID));
+        Screenshot screenshot = new AShot().takeScreenshot(this.driver, webElement);
+        File newScreenshot = new File(getActualFilePath());
+        try {
+            ImageIO.write(screenshot.getImage(), this.SCREENSHOT_EXTENSION.replace(".",""), newScreenshot);
+        }catch (IOException e){
+            System.out.println("Actual screenshot of the element with id " +
+                    elementID + "was not created!");
+        }
+    }
+*/
     public void makeDiff(){
         try {
             System.out.println("\nMaking diff...");
             ImageDiff diff = new ImageDiffer().makeDiff(getActualScreenshot(), getExpectedScreenshot());
             File diffFile = new File(getDiffFilePath());
-            ImageIO.write(diff.getMarkedImage(), "png", diffFile);
+            ImageIO.write(diff.getMarkedImage(), this.SCREENSHOT_EXTENSION.replace(".",""), diffFile);
             System.out.println("\nDiff completed.");
         }catch(IOException e){
             System.out.println("\nSomething went wrong");

@@ -1,8 +1,8 @@
 package com.softserve.fineui;
 
-import org.junit.*;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.By;
+
 import java.io.File;
 
 import static org.junit.Assert.*;
@@ -37,11 +37,25 @@ public class UtilsTest extends AbstractTest {
         driver.manage().window().maximize();
         driver.get("https://google.com");
         if(!s.actualScreenshotExists()){
-            s.makeActualScreenshot();}
             s.makeExpectedScreenshot();
+        }
+            s.makeActualScreenshot();
             s.makeDiff();
         }catch(Exception e){
             System.out.println(e);
         }
+    }
+    //@Ignore
+    @Test
+    public void loginToFacebook(){
+        String login = "dmitriy.firsov@gmail.com";
+        String password = "alternativerock";
+        driver.manage().window().maximize();
+        driver.get("https://facebook.com");
+        s.makeActualScreenshotByCssSelector("#email");
+        driver.findElement(By.id("email")).sendKeys(login);
+        driver.findElement(By.id("pass")).sendKeys(password);
+        driver.findElement(By.id("loginbutton")).click();
+        s.makeActualScreenshot();
     }
 }
