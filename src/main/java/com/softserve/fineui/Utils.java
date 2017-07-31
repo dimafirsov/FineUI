@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,6 +31,35 @@ public class Utils {
         } else {
             System.setProperty("webdriver.chrome.driver", "driver" + File.separator + "chromedriver_mac");
             return new ChromeDriver();
+        }
+    }
+
+    public static WebDriver fireFoxDriverInit()
+    {
+        if (SystemUtils.IS_OS_WINDOWS){
+            System.setProperty("webdriver.gecko.driver", "driver" + File.separator + "geckodriver.exe");
+        } else {
+            System.setProperty("webdriver.gecko.driver", "driver" + File.separator + "geckodriver_mac");
+        }
+        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        capabilities.setCapability("marionette", true);
+        return new FirefoxDriver(capabilities);
+    }
+
+    public static void closeAllDrivers(WebDriver driver, WebDriverType webDriverType){
+        for (int i = 0; i>WebDriverType.values().length; i++ ) {
+            switch (webDriverType) {
+                case CHROME:
+                case FF:
+                case IE:
+                    try{
+                        driver.close();
+                    }catch(Exception e){
+                        System.out.println("No " + webDriverType + " driver instance is detected. Nothing to close");
+                    }finally{
+                        return;
+                    }
+            }
         }
     }
 

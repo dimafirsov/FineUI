@@ -99,9 +99,9 @@ public class Screenshots {
         return fileExists(getExpectedFilePath());
     }
 
-    public ArrayList<String> setScreenshotDirs(String screenshotsDirName) {
+    public ArrayList<String> setScreenshotDirs() {
 
-        SCREENSHOTS_ROOT_DIR = getCurrentStructure() + screenshotsDirName;
+        SCREENSHOTS_ROOT_DIR = getCurrentStructure();
         EXPECTED_SCREENSHOT_PATH =  SCREENSHOTS_ROOT_DIR + File.separator + "expected" + File.separator;
         ACTUAL_SCREENSHOT_PATH = SCREENSHOTS_ROOT_DIR + File.separator + "actual" + File.separator;
         DIFF_SCREENSHOT_PATH = SCREENSHOTS_ROOT_DIR + File.separator + "diff" + File.separator;

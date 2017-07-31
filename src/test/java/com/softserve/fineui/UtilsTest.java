@@ -34,8 +34,8 @@ public class UtilsTest extends AbstractTest {
     @Test
     public void canAccessGooglePage() {
         try{
-        chrome_driver.manage().window().maximize();
-        chrome_driver.get("https://google.com");
+        driver.manage().window().maximize();
+        driver.get("https://google.com");
         if(!s.actualScreenshotExists()){
             s.makeExpectedScreenshot();
         }
@@ -50,12 +50,12 @@ public class UtilsTest extends AbstractTest {
     public void loginToFacebook(){
         String login = "dmitriy.firsov@gmail.com";
         String password = "alternativerock";
-        chrome_driver.manage().window().maximize();
-        chrome_driver.get("https://facebook.com");
+        driver.manage().window().maximize();
+        driver.get("https://facebook.com");
         s.makeActualScreenshotByCssSelector("#email");
-        chrome_driver.findElement(By.id("email")).sendKeys(login);
-        chrome_driver.findElement(By.id("pass")).sendKeys(password);
-        chrome_driver.findElement(By.id("loginbutton")).click();
+        driver.findElement(By.id("email")).sendKeys(login);
+        driver.findElement(By.id("pass")).sendKeys(password);
+        driver.findElement(By.id("loginbutton")).click();
         s.makeActualScreenshot();
     }
 }

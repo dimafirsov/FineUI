@@ -18,7 +18,7 @@ public class App
 
         Screenshots s = new Screenshots(driver, structure.getPath());
 
-        s.setScreenshotDirs("visual");
+        s.setScreenshotDirs();
 
         driver.manage().window().maximize();
         driver.get("https://facebook.com");
@@ -32,7 +32,7 @@ public class App
 
         driver = new ChromeDriver(Utils.allowChromeNotifications());
         s = new Screenshots(driver, structure.getPath());
-        s.setScreenshotDirs("visual");
+        s.setScreenshotDirs();
         driver.manage().window().maximize();
         driver.get("https://facebook.com");
         String login = "dmitriy.firsov@gmail.com";

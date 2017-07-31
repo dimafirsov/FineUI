@@ -36,8 +36,22 @@ public class FilesStructure {
                 testName + File.separator;
     }
 
+    public String getPath(WebDriverType type){
+        String path = "";
+        switch(type) {
+            case CHROME:
+            case FF:
+            case IE:
+                path = getPath() + type.toString().toLowerCase() + File.separator;
+        }
+        return path;
+    }
+
     public void createFilesStructure(){
         Utils.createDirsRecursively(getPath());
+    }
+    public void createFilesStructure(WebDriverType type){
+        Utils.createDirsRecursively(getPath(type));
     }
 
 

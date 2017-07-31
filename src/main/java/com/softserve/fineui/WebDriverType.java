@@ -1,10 +1,14 @@
 package com.softserve.fineui;
 
+import java.util.List;
+
 public enum WebDriverType {
 
-    FF,
     CHROME,
+    FF,
     IE
+
+
 
 }
 
