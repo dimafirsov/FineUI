@@ -128,6 +128,12 @@ public class Utils {
         return dateFormat.format(date);
     }
 
+    public static String getCurrentDate(String pattern){
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.format(date);
+    }
+
 /*    public static String getCurrentDate(String yyyyMMddHHmmSS){
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat(yyyyMMddHHmmSS);
@@ -149,6 +155,7 @@ public class Utils {
         }
         return "Wrong day of week";
     }
+
 
     public static ChromeOptions allowChromeNotifications(){
         //Create prefs map to store all preferences
