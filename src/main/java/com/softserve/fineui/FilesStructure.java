@@ -1,21 +1,28 @@
 package com.softserve.fineui;
 
+import org.apache.commons.exec.OS;
+import org.apache.commons.lang3.SystemUtils;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import static com.softserve.fineui.Utils.*;
 
 /**
  * Created by dimafirsov on 05.07.17.
  */
 public class FilesStructure {
-    private final static String currentDateTime = getCurrentDate("yyyy-MM-dd");
-    private final static String currentDateSec = getCurrentDate("hh:mm:ss");
+    private static String currentDateTime = Utils.getCurrentDate("yyyy-MM-dd");
+    private final static String currentDateSec = new FilesStructure().getCurrentDateSec();
     private final String testResultsName = "test_results";
     private String testSuiteName;
     private String testName;
+
+    private String getCurrentDateSec(){
+        if(OS.isFamilyWindows()){
+            return Utils.getCurrentDate("hh-mm-ss-(aa)");
+        }else{
+            return Utils.getCurrentDate("hh:mm:ss:aa");
+        }
+    }
+
+    FilesStructure(){ }
 
     FilesStructure(String testSuiteName, String testName) {
         this.testSuiteName = testSuiteName;
@@ -29,7 +36,7 @@ public class FilesStructure {
                 testName + File.separator;
     }
 
-    public void createFileStructure(){
+    public void createFilesStructure(){
         Utils.createDirsRecursively(getPath());
     }
 

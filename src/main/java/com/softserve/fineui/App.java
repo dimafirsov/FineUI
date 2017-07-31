@@ -14,7 +14,7 @@ public class App
     {
         WebDriver driver = Utils.chromeDriverInit();
         FilesStructure structure = new FilesStructure("some_test_suite", "some_test_name");
-        structure.createFileStructure();
+        structure.createFilesStructure();
 
         Screenshots s = new Screenshots(driver, structure.getPath());
 
