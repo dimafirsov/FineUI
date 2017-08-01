@@ -6,7 +6,7 @@ public enum WebDriverType {
 
     CHROME,
     FF,
-    IE
+    EDGE
 
 
 

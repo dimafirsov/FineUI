@@ -1,9 +1,11 @@
 package com.softserve.fineui;
 
+import org.apache.commons.exec.OS;
 import org.apache.commons.lang3.SystemUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -47,9 +49,9 @@ public class Utils {
         return new FirefoxDriver(capabilities);
     }
 
-    public static WebDriver internetExplorerDriverInit()
-    {
-        return new InternetExplorerDriver();
+    public static WebDriver edgeDriverInit() {
+        System.setProperty("webdriver.edge.driver", "driver" + File.separator + "MicrosoftWebDriver.exe");
+        return new EdgeDriver();
     }
 
     public static void closeAllDrivers(ArrayList<WebDriver> drivers){
@@ -208,5 +210,37 @@ public class Utils {
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", prefs);
         return options;
+    }
+
+    public static void killAllDriverProcesses(){
+            Runtime r = Runtime.getRuntime();
+        if(OS.isFamilyWindows()){
+            try{
+                r.exec("taskkill /f /im chromedriver.exe");
+            }catch (IOException e){
+                System.out.println("No Chormedriver is running. Nothing to close.");
+            }
+            try{
+                r.exec("taskkill /f /im geckodriver.exe");
+            }catch (IOException e){
+                System.out.println("No Firefox driver is running. Nothing to close.");
+            }
+            try{
+                r.exec("taskkill /f /im MicrosoftWebDriver.exe");
+            }catch (IOException e){
+                System.out.println("No Edge driver is running. Nothing to close.");
+            }
+        }else if(OS.isFamilyMac()){
+            try{
+                r.exec("killall chromedriver_mac");
+            }catch (IOException e){
+                System.out.println("No Chormedriver is running. Nothing to close.");
+            }
+            try{
+                r.exec("killall geckodriver_mac");
+            }catch (IOException e){
+                System.out.println("No Firefox driver is running. Nothing to close.");
+            }
+        }
     }
 }

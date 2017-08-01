@@ -1,16 +1,11 @@
 package com.softserve.fineui;
 
-import jdk.nashorn.internal.runtime.ECMAException;
 import org.apache.commons.exec.OS;
 import org.junit.*;
 import org.junit.rules.TestName;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by dimafirsov on 05.07.17.
@@ -19,11 +14,11 @@ public class AbstractTest {
 
     public WebDriver chrome_driver;
     public WebDriver ff_driver;
-    public WebDriver ie_driver;
+    public WebDriver edge_driver;
     public ArrayList<WebDriver> drivers = new ArrayList<WebDriver>();
 
-    int webDriverTypeItemsAmount = WebDriverType.values().length;
-    WebDriverType[] webDriverTypesArray = WebDriverType.values();
+    private int webDriverTypeItemsAmount = WebDriverType.values().length;
+    private WebDriverType[] webDriverTypesArray = WebDriverType.values();
 
     public String TEMP_DIR_NAME = "temp";
     public Integer TESTCASE_NAME_ID;
@@ -32,7 +27,7 @@ public class AbstractTest {
 
     public Screenshots s4ch;
     public Screenshots s4ff;
-    public Screenshots s4ie;
+    public Screenshots s4edge;
     public ArrayList<Screenshots> screenshots = new ArrayList<Screenshots>();
 
     public FilesStructure structure;
@@ -54,7 +49,7 @@ public class AbstractTest {
 
     @AfterClass
     public static void afterAll() {
-
+        Utils.killAllDriverProcesses();
     }
 
     @Before
@@ -88,14 +83,13 @@ public class AbstractTest {
                     this.screenshots.add(s4ff);
                     s4ff.setScreenshotDirs();
                     break;
-                case IE:
+                case EDGE:
                     if(OS.isFamilyWindows()){
-                        this.ie_driver = Utils.internetExplorerDriverInit();
-                        this.drivers.add(i, this.ie_driver);
-                        s4ie = new Screenshots(this.ie_driver, this.structure.getPath(WebDriverType.values()[i]));
-                        this.screenshots.add(s4ie);
-                        //s4ch.setScreenshotDirs(SCREENSHOTS_ROOT_DIR);
-                        s4ie.setScreenshotDirs();
+                        this.edge_driver = Utils.edgeDriverInit();
+                        this.drivers.add(i, this.edge_driver);
+                        s4edge = new Screenshots(this.edge_driver, this.structure.getPath(WebDriverType.values()[i]));
+                        this.screenshots.add(s4edge);
+                        s4edge.setScreenshotDirs();
                         break;
                     }else{
                         break;
@@ -114,7 +108,9 @@ public class AbstractTest {
     @After
     public void afterTest(){
         //Cleanup procedures
-        Utils.closeAllDrivers(this.drivers);
+        chrome_driver.close();
+        ff_driver.close();
+        edge_driver.close();
         Utils.removeFolder(TEMP_DIR_NAME);
         //s4ch.removeScreenshotsRootFolder();
     }

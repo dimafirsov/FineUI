@@ -1,5 +1,6 @@
 package com.softserve.fineui;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import java.lang.reflect.Array;
@@ -26,6 +27,18 @@ public class ExecuteDriver {
     public void driversWaitSeconds(int time){
         for(int i=0; i<this.drivers.size(); i++){
             this.drivers.get(i).manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        }
+    }
+
+    public void driversMaximize(){
+        for(int i=0; i<this.drivers.size(); i++){
+            this.drivers.get(i).manage().window().maximize();
+        }
+    }
+
+    public void focusOnElementByCssSelector(String selector){
+        for(int i=0; i<this.drivers.size(); i++){
+            this.drivers.get(i).findElement(By.cssSelector(selector)).click();
         }
     }
 

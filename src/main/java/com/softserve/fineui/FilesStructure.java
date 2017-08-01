@@ -1,7 +1,7 @@
 package com.softserve.fineui;
 
 import org.apache.commons.exec.OS;
-import org.apache.commons.lang3.SystemUtils;
+
 import java.io.File;
 
 /**
@@ -41,7 +41,7 @@ public class FilesStructure {
         switch(type) {
             case CHROME:
             case FF:
-            case IE:
+            case EDGE:
                 path = getPath() + type.toString().toLowerCase() + File.separator;
         }
         return path;

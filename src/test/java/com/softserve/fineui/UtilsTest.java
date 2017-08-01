@@ -1,14 +1,9 @@
 package com.softserve.fineui;
 
-import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 
 import java.io.File;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -39,9 +34,13 @@ public class UtilsTest extends AbstractTest {
     public void canAccessSomePage() {
         try{
             ed.driversGet("https://google.com");
+            ed.focusOnElementByCssSelector("#gb");
             s.makeExpectedScreenshotsForAllBrowsers();
+
             ed.driversGet("https://google.com");
+            ed.focusOnElementByCssSelector("#gb");
             s.makeActualScreenshotsForAllBrowsers();
+
             th.assertAllDiffs(s.makeDiffScreenshotsForAllBrowsers());
 
         }catch(Exception e){
