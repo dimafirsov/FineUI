@@ -1,6 +1,7 @@
 package com.softserve.fineui;
 
 import jdk.nashorn.internal.runtime.ECMAException;
+import org.apache.commons.exec.OS;
 import org.junit.*;
 import org.junit.rules.TestName;
 import org.openqa.selenium.WebDriver;
@@ -37,6 +38,7 @@ public class AbstractTest {
     public FilesStructure structure;
     public ExecuteDriver ed;
     public Screenshots s;
+    public TestHelper th;
 
 
     public static int counter = 1;
@@ -86,35 +88,33 @@ public class AbstractTest {
                     this.screenshots.add(s4ff);
                     s4ff.setScreenshotDirs();
                     break;
-                /*case IE:
-                    s4ff = new Screenshots(this.ff_driver, this.structure.getPath(WebDriverType.values()[i]));
-                    //s4ch.setScreenshotDirs(SCREENSHOTS_ROOT_DIR);
-                    s4ff.setScreenshotDirs();
-                    break;*/
+                case IE:
+                    if(OS.isFamilyWindows()){
+                        this.ie_driver = Utils.internetExplorerDriverInit();
+                        this.drivers.add(i, this.ie_driver);
+                        s4ie = new Screenshots(this.ie_driver, this.structure.getPath(WebDriverType.values()[i]));
+                        this.screenshots.add(s4ie);
+                        //s4ch.setScreenshotDirs(SCREENSHOTS_ROOT_DIR);
+                        s4ie.setScreenshotDirs();
+                        break;
+                    }else{
+                        break;
+                    }
+
             }
         }
         //Increasing the counter value to make sure the test case id is increased
         this.counter++;
         ed = new ExecuteDriver(drivers);
         s = new Screenshots(screenshots);
+        th = new TestHelper();
 
     }
 
     @After
     public void afterTest(){
         //Cleanup procedures
-    try {
-        chrome_driver.close();
-        //ie_driver.close();
-    }catch(NullPointerException e){
-        System.out.println("Driver instance was not created");
-        e.printStackTrace();
-    }
-    try{
-        ff_driver.close();
-    }catch(Exception e){
-        e.printStackTrace();
-    }
+        Utils.closeAllDrivers(this.drivers);
         Utils.removeFolder(TEMP_DIR_NAME);
         //s4ch.removeScreenshotsRootFolder();
     }

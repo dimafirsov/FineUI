@@ -1,5 +1,6 @@
 package com.softserve.fineui;
 
+import com.sun.tools.javac.util.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,6 +32,7 @@ public class Screenshots {
         this.screenshots = screenshots;
     }
 
+    private static int diffResult;
     private ArrayList<Screenshots> screenshots;
     private WebDriver driver;
     private String structurePath;
@@ -202,16 +204,19 @@ public class Screenshots {
 
 
 */
-    public void makeDiff(){
+    public int makeDiff(){
+        int result = 0;
         try {
             System.out.println("\nMaking diff...");
             ImageDiff diff = new ImageDiffer().makeDiff(getActualScreenshot(), getExpectedScreenshot());
+            result = diff.getDiffSize();
             File diffFile = new File(getDiffFilePath());
             ImageIO.write(diff.getMarkedImage(), this.SCREENSHOT_EXTENSION.replace(".",""), diffFile);
             System.out.println("\nDiff completed.");
         }catch(IOException e){
             System.out.println("\nSomething went wrong");
         }
+        return result;
     }
 
 
@@ -237,10 +242,12 @@ public class Screenshots {
             screenshots.get(i).makeActualScreenshot();
         }
     }
-    public void makeDiffScreenshotsForAllBrowsers(){
+    public ArrayList<Integer> makeDiffScreenshotsForAllBrowsers(){
+        ArrayList<Integer> result = new ArrayList<Integer>();
         for(int i=0; i<this.screenshots.size(); i++){
-            screenshots.get(i).makeDiff();
+            result.add(screenshots.get(i).makeDiff());
         }
+        return result;
     }
 }
 

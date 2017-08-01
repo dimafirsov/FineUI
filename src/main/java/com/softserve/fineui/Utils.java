@@ -47,19 +47,18 @@ public class Utils {
         return new FirefoxDriver(capabilities);
     }
 
-    public static void closeAllDrivers(WebDriver driver, WebDriverType webDriverType){
-        for (int i = 0; i>WebDriverType.values().length; i++ ) {
-            switch (webDriverType) {
-                case CHROME:
-                case FF:
-                case IE:
-                    try{
-                        driver.close();
-                    }catch(Exception e){
-                        System.out.println("No " + webDriverType + " driver instance is detected. Nothing to close");
-                    }finally{
-                        return;
-                    }
+    public static WebDriver internetExplorerDriverInit()
+    {
+        return new InternetExplorerDriver();
+    }
+
+    public static void closeAllDrivers(ArrayList<WebDriver> drivers){
+        for (int i = 0; i>drivers.size(); i++ ) {
+            try{
+                drivers.get(i).close();
+            }catch(Exception e){
+                System.out.println("No " + drivers.get(i).getTitle() +
+                        " driver instance is detected. Nothing to close");
             }
         }
     }
