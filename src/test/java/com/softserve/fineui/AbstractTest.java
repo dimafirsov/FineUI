@@ -1,10 +1,12 @@
 package com.softserve.fineui;
 
+import jdk.nashorn.internal.runtime.ECMAException;
 import org.junit.*;
 import org.junit.rules.TestName;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,7 @@ public class AbstractTest {
     public WebDriver chrome_driver;
     public WebDriver ff_driver;
     public WebDriver ie_driver;
+    public ArrayList<WebDriver> drivers = new ArrayList<WebDriver>();
 
     int webDriverTypeItemsAmount = WebDriverType.values().length;
     WebDriverType[] webDriverTypesArray = WebDriverType.values();
@@ -32,7 +35,9 @@ public class AbstractTest {
     public ArrayList<Screenshots> screenshots = new ArrayList<Screenshots>();
 
     public FilesStructure structure;
-    public ArrayList<WebDriver> drivers = new ArrayList<WebDriver>();
+    public ExecuteDriver ed;
+    public Screenshots s;
+
 
     public static int counter = 1;
 
@@ -53,7 +58,7 @@ public class AbstractTest {
     @Before
     public void beforeTest(){
         // Creating a 'temp' folder for tests. It is removed after all tests have been run
-        //Utils.createDir(TEMP_DIR_NAME);
+        Utils.createDir(TEMP_DIR_NAME);
 
         //Evaluating the structure of the test case folder name.
         this.TESTCASE_NAME_ID = this.counter;
@@ -90,6 +95,8 @@ public class AbstractTest {
         }
         //Increasing the counter value to make sure the test case id is increased
         this.counter++;
+        ed = new ExecuteDriver(drivers);
+        s = new Screenshots(screenshots);
 
     }
 
@@ -98,13 +105,14 @@ public class AbstractTest {
         //Cleanup procedures
     try {
         chrome_driver.close();
-        ff_driver.close();
         //ie_driver.close();
-    }catch(WebDriverException e){
-        System.out.println("No webdriver instance found");
-        e.printStackTrace();
     }catch(NullPointerException e){
         System.out.println("Driver instance was not created");
+        e.printStackTrace();
+    }
+    try{
+        ff_driver.close();
+    }catch(Exception e){
         e.printStackTrace();
     }
         Utils.removeFolder(TEMP_DIR_NAME);

@@ -26,6 +26,12 @@ public class Screenshots {
         this.driver = driver;
         this.structurePath = structurePath;
     }
+
+    Screenshots(ArrayList<Screenshots> screenshots) {
+        this.screenshots = screenshots;
+    }
+
+    private ArrayList<Screenshots> screenshots;
     private WebDriver driver;
     private String structurePath;
 
@@ -208,6 +214,8 @@ public class Screenshots {
         }
     }
 
+
+
     public Screenshot saveActualScreenshot() throws IOException {
         //TODO: everything
         Screenshot expected = getExpectedScreenshot();
@@ -217,6 +225,22 @@ public class Screenshots {
 
     public void removeScreenshotsRootFolder(){
         removeFolder(getScreenshotsRootDir());
+    }
+
+    public void makeExpectedScreenshotsForAllBrowsers(){
+        for(int i=0; i<this.screenshots.size(); i++){
+            screenshots.get(i).makeExpectedScreenshot();
+        }
+    }
+    public void makeActualScreenshotsForAllBrowsers(){
+        for(int i=0; i<this.screenshots.size(); i++){
+            screenshots.get(i).makeActualScreenshot();
+        }
+    }
+    public void makeDiffScreenshotsForAllBrowsers(){
+        for(int i=0; i<this.screenshots.size(); i++){
+            screenshots.get(i).makeDiff();
+        }
     }
 }
 

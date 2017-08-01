@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
  * Created by Dmytro Firsov on 12/3/2016.
  */
 public class UtilsTest extends AbstractTest {
-@Ignore
+
     @Test
     public void fileExists() throws Exception {
         String path = TEMP_DIR_NAME + File.separator + "test.txt";
@@ -22,7 +22,7 @@ public class UtilsTest extends AbstractTest {
         file.createNewFile();
         assertEquals(file.exists(), Utils.fileExists(path));
     }
-    @Ignore
+
     @Test
     public void createDir() throws Exception {
         String dir = this.TEMP_DIR_NAME + File.separator + "createDir";
@@ -33,7 +33,20 @@ public class UtilsTest extends AbstractTest {
     }
 
     @Test
-    public void canAccessGooglePage() {
+    public void canAccessSomeFuckingPage() {
+        try{
+            ed.driversGet("https://facebook.com");
+            s.makeExpectedScreenshotsForAllBrowsers();
+            ed.driversGet("https://amazon.com");
+            s.makeActualScreenshotsForAllBrowsers();
+            s.makeDiffScreenshotsForAllBrowsers();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void canAccessWebPage() {
         try{
             for(int i = 0; i< drivers.size(); i++){
                 //drivers.get(i).manage().window().maximize();
@@ -47,7 +60,7 @@ public class UtilsTest extends AbstractTest {
             System.out.println(e);
         }
     }
-    @Ignore
+
     @Test
     public void loginToFacebook(){
         String login = "dmitriy.firsov@gmail.com";
