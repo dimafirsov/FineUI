@@ -3,26 +3,37 @@ package com.softserve.fineui;
 import org.junit.*;
 import org.junit.rules.TestName;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import com.softserve.fineui.WebDriverType;
+import org.openqa.selenium.WebDriverException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by dimafirsov on 05.07.17.
  */
 public class AbstractTest {
 
-    public WebDriver driver;
+    public WebDriver chrome_driver;
+    public WebDriver ff_driver;
+    public WebDriver ie_driver;
+
     int webDriverTypeItemsAmount = WebDriverType.values().length;
     WebDriverType[] webDriverTypesArray = WebDriverType.values();
+
     public String TEMP_DIR_NAME = "temp";
     public Integer TESTCASE_NAME_ID;
     public String TEST_NAME;
     public String TESTCASE_NAME;
-    public String SCREENSHOTS_ROOT_DIR = "visual";
-    public Screenshots s;
+
+    public Screenshots s4ch;
+    public Screenshots s4ff;
+    public Screenshots s4ie;
+    public ArrayList<Screenshots> screenshots = new ArrayList<Screenshots>();
+
     public FilesStructure structure;
-    public WebDriverType webDriverType;
+    public ArrayList<WebDriver> drivers = new ArrayList<WebDriver>();
+
     public static int counter = 1;
 
     @Rule
@@ -42,46 +53,62 @@ public class AbstractTest {
     @Before
     public void beforeTest(){
         // Creating a 'temp' folder for tests. It is removed after all tests have been run
-        Utils.createDir(TEMP_DIR_NAME);
-        for (int i = 0; i<webDriverTypeItemsAmount; i++ ) {
+        //Utils.createDir(TEMP_DIR_NAME);
 
-            //Initializing the browser instance
-            switch (webDriverTypesArray[i]) {
+        //Evaluating the structure of the test case folder name.
+        this.TESTCASE_NAME_ID = this.counter;
+        this.TEST_NAME = name.getMethodName();
+        this.TESTCASE_NAME = TESTCASE_NAME_ID.toString() + "." + this.TEST_NAME;
+
+        // Creating directory structure, with timestamp, test suite name and test case name
+        this.structure = new FilesStructure(this.getClass().getSimpleName(), TESTCASE_NAME);
+
+        //Creating the directory structure for the screenshots
+        for (int i = 0; i<webDriverTypeItemsAmount; i++ ) {
+            this.structure.createFilesStructure(webDriverTypesArray[i]);
+            switch(webDriverTypesArray[i]) {
                 case CHROME:
-                    this.driver = Utils.chromeDriverInit();
+                    this.chrome_driver = Utils.chromeDriverInit();
+                    this.drivers.add(i, this.chrome_driver);
+                    s4ch = new Screenshots(this.chrome_driver, this.structure.getPath(WebDriverType.values()[i]));
+                    this.screenshots.add(s4ch);
+                    s4ch.setScreenshotDirs();
                     break;
                 case FF:
-                    this.driver = Utils.fireFoxDriverInit();
+                    this.ff_driver = Utils.fireFoxDriverInit();
+                    this.drivers.add(i, this.ff_driver);
+                    s4ff = new Screenshots(this.ff_driver, this.structure.getPath(WebDriverType.values()[i]));
+                    this.screenshots.add(s4ff);
+                    s4ff.setScreenshotDirs();
                     break;
-                    //case IE: this.driver = new InternetExplorerDriver();
+                /*case IE:
+                    s4ff = new Screenshots(this.ff_driver, this.structure.getPath(WebDriverType.values()[i]));
+                    //s4ch.setScreenshotDirs(SCREENSHOTS_ROOT_DIR);
+                    s4ff.setScreenshotDirs();
+                    break;*/
             }
-
-            //Evaluating the structure of the test case folder name.
-            this.TESTCASE_NAME_ID = this.counter;
-            this.TEST_NAME = name.getMethodName();
-            this.TESTCASE_NAME = TESTCASE_NAME_ID.toString() + "." + this.TEST_NAME;
-
-            // Creating directory structure, with timestamp, test suite name and test case name
-            this.structure = new FilesStructure(this.getClass().getSimpleName(), TESTCASE_NAME);
-            this.structure.createFilesStructure(webDriverTypesArray[i]);
-
-            //Creating the directory structure for the screenshots
-
-            s = new Screenshots(this.driver, this.structure.getPath(WebDriverType.values()[i]));
-            //s.setScreenshotDirs(SCREENSHOTS_ROOT_DIR);
-            s.setScreenshotDirs();
-
-            //Increasing the counter value to make sure the test case id is increased
-            this.counter++;
         }
+        //Increasing the counter value to make sure the test case id is increased
+        this.counter++;
+
     }
-@Ignore
+
     @After
     public void afterTest(){
         //Cleanup procedures
-        Utils.closeAllDrivers(driver, webDriverType);
+    try {
+        chrome_driver.close();
+        ff_driver.close();
+        //ie_driver.close();
+    }catch(WebDriverException e){
+        System.out.println("No webdriver instance found");
+        e.printStackTrace();
+    }catch(NullPointerException e){
+        System.out.println("Driver instance was not created");
+        e.printStackTrace();
+    }
         Utils.removeFolder(TEMP_DIR_NAME);
-        //s.removeScreenshotsRootFolder();
+        //s4ch.removeScreenshotsRootFolder();
     }
 
 }

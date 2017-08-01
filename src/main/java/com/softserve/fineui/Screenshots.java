@@ -3,6 +3,7 @@ package com.softserve.fineui;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.comparison.ImageDiff;
@@ -46,8 +47,8 @@ public class Screenshots {
     private String DIFF_SCREENSHOT_PATH;
     private String GIF_SCREENSHOT_PATH;
 
-    private String EXPECTED_FILENAME = screenshotNameFormat("expected");
-    private String ACTUAL_FILENAME = screenshotNameFormat("actual");
+    private String EXPECTED_FILENAME = screenshotNameFormat("expected");;
+    private String ACTUAL_FILENAME= screenshotNameFormat("actual");
     private String DIFF_FILENAME = screenshotNameFormat("diff");
     private String GIF_FILENAME = screenshotNameFormat("gif");
 
@@ -192,6 +193,8 @@ public class Screenshots {
                     elementID + "was not created!");
         }
     }
+
+
 */
     public void makeDiff(){
         try {

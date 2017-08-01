@@ -46,7 +46,9 @@ public class SANDBOX {
 
     public static void main(String[] args) {
 
-        new SANDBOX().beforeTest();
+        WebDriver driver = Utils.fireFoxDriverInit();
+        driver.manage().window().maximize();
+
 
 
     }

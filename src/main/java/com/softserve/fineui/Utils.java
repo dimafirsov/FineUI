@@ -8,6 +8,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -184,6 +185,18 @@ public class Utils {
             case Calendar.SATURDAY: return "Sat";
         }
         return "Wrong day of week";
+    }
+
+    public static Dimension getCurrentWindowSize(){
+        return Toolkit.getDefaultToolkit().getScreenSize();
+    }
+
+    public static double getCurrentWindowHeigth(){
+        return getCurrentWindowSize().getHeight();
+    }
+
+    public static double getCurrentWindowWidth(){
+        return getCurrentWindowSize().getWidth();
     }
 
 
