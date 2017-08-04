@@ -21,12 +21,12 @@ import static com.softserve.fineui.Utils.*;
  */
 public class Screenshots {
 
-    Screenshots(WebDriver driver, String structurePath) {
+    public Screenshots(WebDriver driver, String structurePath) {
         this.driver = driver;
         this.structurePath = structurePath;
     }
 
-    Screenshots(ArrayList<Screenshots> screenshots) {
+    public Screenshots(ArrayList<Screenshots> screenshots) {
         this.screenshots = screenshots;
     }
 

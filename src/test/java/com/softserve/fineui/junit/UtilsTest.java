@@ -1,5 +1,6 @@
 package com.softserve.fineui;
 
+import com.softserve.fineui.helpers.AbstractTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -33,18 +34,20 @@ public class UtilsTest extends AbstractTest {
     @Test
     public void canAccessSomePage() {
         try{
-            ed.driversGet("https://google.com");
-            ed.focusOnElementByCssSelector("#gb");
+            execute.driversGet("https://google.com");
+            execute.focusOnElementByCssSelector("#gb");
+            execute.driversWaitSeconds(1);
             s.makeExpectedScreenshotsForAllBrowsers();
 
-            ed.driversGet("https://google.com");
-            ed.focusOnElementByCssSelector("#gb");
+            execute.driversGet("https://google.com");
+            execute.focusOnElementByCssSelector("#gb");
+            execute.driversWaitSeconds(1);
             s.makeActualScreenshotsForAllBrowsers();
 
-            th.assertAllDiffs(s.makeDiffScreenshotsForAllBrowsers());
+            qa.assertAllDiffs(s.makeDiffScreenshotsForAllBrowsers());
 
         }catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -60,14 +63,14 @@ public class UtilsTest extends AbstractTest {
                 screenshots.get(i).makeDiff();
             }
         }catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
     @Test
     public void loginToFacebook(){
         String login = "dmitriy.firsov@gmail.com";
-        String password = "alternativerock";
+        String password = "";
         chrome_driver.manage().window().maximize();
         chrome_driver.get("https://facebook.com");
         s4ch.makeActualScreenshotByCssSelector("#email");

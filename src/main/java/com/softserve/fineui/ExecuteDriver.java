@@ -14,7 +14,7 @@ public class ExecuteDriver {
 
     private ArrayList<WebDriver> drivers;
 
-    ExecuteDriver(ArrayList<WebDriver> drivers){
+    public ExecuteDriver(ArrayList<WebDriver> drivers){
         this.drivers = drivers;
     }
 

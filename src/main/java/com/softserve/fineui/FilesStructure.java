@@ -22,9 +22,9 @@ public class FilesStructure {
         }
     }
 
-    FilesStructure(){ }
+    public FilesStructure(){ }
 
-    FilesStructure(String testSuiteName, String testName) {
+    public FilesStructure(String testSuiteName, String testName) {
         this.testSuiteName = testSuiteName;
         this.testName = testName;
     }

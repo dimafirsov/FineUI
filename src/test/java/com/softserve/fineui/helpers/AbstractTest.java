@@ -1,5 +1,7 @@
-package com.softserve.fineui;
+package com.softserve.fineui.helpers;
 
+import com.softserve.fineui.*;
+import com.softserve.fineui.TestHelper;
 import org.apache.commons.exec.OS;
 import org.junit.*;
 import org.junit.rules.TestName;
@@ -31,9 +33,9 @@ public class AbstractTest {
     public ArrayList<Screenshots> screenshots = new ArrayList<Screenshots>();
 
     public FilesStructure structure;
-    public ExecuteDriver ed;
+    public ExecuteDriver execute;
     public Screenshots s;
-    public TestHelper th;
+    public com.softserve.fineui.TestHelper qa;
 
 
     public static int counter = 1;
@@ -99,9 +101,9 @@ public class AbstractTest {
         }
         //Increasing the counter value to make sure the test case id is increased
         this.counter++;
-        ed = new ExecuteDriver(drivers);
+        execute = new ExecuteDriver(drivers);
         s = new Screenshots(screenshots);
-        th = new TestHelper();
+        qa = new TestHelper();
 
     }
 
