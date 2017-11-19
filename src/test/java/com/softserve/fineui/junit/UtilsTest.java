@@ -1,5 +1,6 @@
-package com.softserve.fineui;
+package com.softserve.fineui.junit;
 
+import com.softserve.fineui.Utils;
 import com.softserve.fineui.helpers.AbstractTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -34,14 +35,14 @@ public class UtilsTest extends AbstractTest {
     @Test
     public void canAccessSomePage() {
         try{
-            execute.driversGet("https://google.com");
-            execute.focusOnElementByCssSelector("#gb");
-            execute.driversWaitSeconds(1);
+            execute.driversGet("https://www.gitbook.com/book/rangle-io/ngcourse2/details");
+            //execute.focusOnElementByCssSelector("#gb");
+            execute.driversWaitSeconds(5);
             s.makeExpectedScreenshotsForAllBrowsers();
 
-            execute.driversGet("https://google.com");
-            execute.focusOnElementByCssSelector("#gb");
-            execute.driversWaitSeconds(1);
+            execute.driversGet("https://www.gitbook.com/book/rangle-io/ngcourse2/details");
+            //execute.focusOnElementByCssSelector("#gb");
+            execute.driversWaitSeconds(5);
             s.makeActualScreenshotsForAllBrowsers();
 
             qa.assertAllDiffs(s.makeDiffScreenshotsForAllBrowsers());
@@ -73,10 +74,11 @@ public class UtilsTest extends AbstractTest {
         String password = "";
         chrome_driver.manage().window().maximize();
         chrome_driver.get("https://facebook.com");
-        s4ch.makeActualScreenshotByCssSelector("#email");
+        s4ch.makeExpectedScreenshot();
         chrome_driver.findElement(By.id("email")).sendKeys(login);
         chrome_driver.findElement(By.id("pass")).sendKeys(password);
         chrome_driver.findElement(By.id("loginbutton")).click();
         s4ch.makeActualScreenshot();
+        qa.assertAllDiffs(s.makeDiffScreenshotsForAllBrowsers());
     }
 }

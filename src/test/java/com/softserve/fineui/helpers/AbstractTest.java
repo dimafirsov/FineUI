@@ -112,7 +112,7 @@ public class AbstractTest {
         //Cleanup procedures
         chrome_driver.close();
         ff_driver.close();
-        edge_driver.close();
+        //edge_driver.close();
         Utils.removeFolder(TEMP_DIR_NAME);
         //s4ch.removeScreenshotsRootFolder();
     }
